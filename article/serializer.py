@@ -6,10 +6,17 @@ from article.models import Comment as CommentModel
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+    createdAt = serializers.SerializerMethodField(method_name="get_created_at")
+    updatedAt = serializers.SerializerMethodField(method_name="get_updated_at")
     class Meta:
         model = ArticleModel
-        fields = "__all__"
+        fields = ["id", "title", "content", "createdAt", "updatedAt"]
 
+    def get_created_at(self, instance):
+        return instance.created_at.isoformat()
+
+    def get_updated_at(self, instance):
+        return instance.updated_at.isoformat()
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

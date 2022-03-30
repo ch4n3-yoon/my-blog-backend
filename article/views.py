@@ -19,12 +19,11 @@ class Article(APIView):
             except ArticleModel.DoesNotExist:
                 return response.fail("no such article")
             
-            return response.success(article)
+            return response.success(ArticleSerializer(article).data)
         
-        all = request.GET.get("all", "")
-        if all:
-            articles = ArticleModel.objects.all()
-            return response.success(articles)
+        articles = ArticleModel.objects.all()
+        return response.success(ArticleSerializer(articles, many=True).data)
+            
     
     def post(self, request):
         title = request.POST.get("title", "")
@@ -53,7 +52,7 @@ class Article(APIView):
         return response.success(article)
 
 
-class Comment(models.Model):
+class Comment(APIView):
     def get(self, request, article_id, comment_id=None):
         try:
             article = ArticleModel.objects.get(id=article_id)

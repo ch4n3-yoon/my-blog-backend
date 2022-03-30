@@ -3,10 +3,13 @@ from django.db import models
 
 class Article(models.Model):
     title = models.CharField("제목", max_length=256, default="")
+    category = models.CharField("분류", max_length=256, default="")
     content = models.TextField("본문", default="", blank=True)
     view_count = models.IntegerField("조회수", default=None, null=True, blank=True)
     like_count = models.IntegerField("추천수", default=None, null=True, blank=True)
     is_deleted = models.BooleanField("게시글 삭제 여부", default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
         return f"{self.title}"
